@@ -1,13 +1,17 @@
 package db
 
-import "database/sql"
+import (
+	"database/sql"
+
+	_ "github.com/go-sql-driver/mysql"
+)
 
 type Database struct {
 	db *sql.DB
 }
 
 func NewDatabase(db *sql.DB) *Database {
-	return &Database {
+	return &Database{
 		db: db,
 	}
 }

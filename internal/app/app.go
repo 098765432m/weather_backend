@@ -8,13 +8,16 @@ import (
 	"github.com/098765432m/config"
 	"github.com/098765432m/internal/db"
 	"github.com/098765432m/internal/handler"
+	"github.com/098765432m/internal/service"
 	"github.com/098765432m/logger"
+	"github.com/098765432m/middleware"
 	"github.com/gorilla/mux"
+	"github.com/spf13/viper"
 )
 
 func Run() error {
 	config.InitConfig()
-	port := config.AppData.Database.Port
+	port := viper.GetString("app.port")
 
 	if port == "" {
 		port = "8500" //Default port
@@ -33,25 +36,41 @@ func Run() error {
 		database_env.Name,
 	)
 
+	// logger.NewLogger().Info.Println(dsn)
+
 	database := &db.Database{}
 	conn, err := database.Connect(dsn)
-	if  err != nil  {
+	if err != nil {
 		logger.NewLogger().Error.Fatal("Error connecting to database: ", err)
 	}
+	logger.NewLogger().Info.Println("Connect to database successfully!")
 	defer conn.Close()
 	//Init database connection END
 
+	log := logger.NewLogger()
+	apiKey := config.AppData.WeatherApp.ApiKey
 
+	//Init Service
+	weatherService := service.NewWeatherService(apiKey)
 
-	homeHandler := handler.NewHomeHandler(*logger.NewLogger())
+	//Init handler
+	homeHandler := handler.NewHomeHandler(log)
+	weatherHandler := handler.NewWeatherHandler(log, weatherService)
 
 	router := mux.NewRouter()
-	router.HandleFunc("/", homeHandler.Home).Methods(http.MethodGet)
 
-	server := &http.Server {
-		Addr: ":" + port,
-		Handler: router,
-		ReadTimeout: 10 * time.Second,
+	apiRouter := router.PathPrefix("/api").Subrouter()
+
+	apiRouter.Use(middleware.LogRequest)
+
+	apiRouter.HandleFunc("/", homeHandler.Home).Methods(http.MethodGet)
+
+	apiRouter.HandleFunc("/weather", weatherHandler.GetCityWeather).Methods(http.MethodGet)
+
+	server := &http.Server{
+		Addr:         ":" + port,
+		Handler:      apiRouter,
+		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
 

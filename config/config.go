@@ -5,16 +5,26 @@ import (
 	"github.com/spf13/viper"
 )
 
-type DatabaseConfig struct {
-	User string `mapstructure:"user"`
-	Password string `mapstructure:"password"`
-	Host string `mapstructure:"host"`
+type AppConfig struct {
 	Port string `mapstructure:"port"`
-	Name string `mapstructure:"name"`
+}
+
+type DatabaseConfig struct {
+	User     string `mapstructure:"user"`
+	Password string `mapstructure:"password"`
+	Host     string `mapstructure:"host"`
+	Port     string `mapstructure:"port"`
+	Name     string `mapstructure:"name"`
+}
+
+type WeatherApiConfig struct {
+	ApiKey string `mapstructure:"api_key"`
 }
 
 type Config struct {
-	Database DatabaseConfig `mapstructure:"database"`
+	App        AppConfig        `mapstructure:"app"`
+	Database   DatabaseConfig   `mapstructure:"database"`
+	WeatherApp WeatherApiConfig `mapstructure:"weather_api"`
 }
 
 var AppData Config

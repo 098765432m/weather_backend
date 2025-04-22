@@ -1,6 +1,12 @@
+app:
+  port: 2250
+
 database:
   host: localhost
-  port: 5500
-  name: my_database
-  user: my_user
-  password: my_password
+  port: 3306
+  name: weather_forecast
+  user: user
+  password: 113446
+
+weather_api:
+  api_key: 68466d0f9d394b8fa6044923252204
