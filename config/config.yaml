@@ -1,12 +1,13 @@
 app:
-  port: 2250
+  port: 2251
 
 database:
-  host: localhost
-  port: 3306
+  host: 127.0.0.1
+  port: 2250
   name: weather_forecast
   user: user
   password: 113446
+  parse_time: true
 
 weather_api:
   api_key: 68466d0f9d394b8fa6044923252204

@@ -15,6 +15,7 @@ type DatabaseConfig struct {
 	Host     string `mapstructure:"host"`
 	Port     string `mapstructure:"port"`
 	Name     string `mapstructure:"name"`
+	ParseTime bool  `mapstructure:"parse_time"`
 }
 
 type WeatherApiConfig struct {

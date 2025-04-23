@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
@@ -26,26 +25,12 @@ func Run() error {
 	logger.NewLogger().Info.Printf("Server is running on port: %s\n", port)
 
 	//Init database connection
-
-	database_env := config.AppData.Database
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
-		database_env.User,
-		database_env.Password,
-		database_env.Host,
-		database_env.Port,
-		database_env.Name,
-	)
-
-	// logger.NewLogger().Info.Println(dsn)
-
-	database := &db.Database{}
-	conn, err := database.Connect(dsn)
+	cfg := config.AppData.Database
+	db, err := db.NewDatabase(&cfg)
 	if err != nil {
-		logger.NewLogger().Error.Fatal("Error connecting to database: ", err)
+		logger.NewLogger().Error.Fatal("Failed to connect to database")
 	}
-	logger.NewLogger().Info.Println("Connect to database successfully!")
-	defer conn.Close()
-	//Init database connection END
+	defer db.CloseDb()
 
 	log := logger.NewLogger()
 	apiKey := config.AppData.WeatherApp.ApiKey
