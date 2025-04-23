@@ -15,12 +15,12 @@ type Database struct {
 
 func NewDatabase(cfg *config.DatabaseConfig) (*Database, error) {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=%t",
-	cfg.User,
-	cfg.Password,
-	cfg.Host,
-	cfg.Port,
-	cfg.Name,
-	cfg.ParseTime,
+		cfg.User,
+		cfg.Password,
+		cfg.Host,
+		cfg.Port,
+		cfg.Name,
+		cfg.ParseTime,
 	)
 
 	// logger.NewLogger().Info.Println(dsn)
@@ -34,10 +34,9 @@ func NewDatabase(cfg *config.DatabaseConfig) (*Database, error) {
 		return nil, err
 	}
 
-	
 	logger.NewLogger().Info.Println("Connect to database successfully!")
 
-	database := &Database{db:db}
+	database := &Database{db: db}
 
 	database.InitDb()
 
@@ -50,6 +49,7 @@ func (d *Database) InitDb() {
 		username VARCHAR(255) NOT NULL UNIQUE,
 		email VARCHAR(255) NOT NULL,
 		password VARCHAR(255) NOT NULL,
+		role ENUM('GUEST', 'STAFF', 'MANAGER') NOT NULL DEFAULT 'GUEST'
 		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 		updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 	);`
