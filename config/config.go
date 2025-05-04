@@ -22,10 +22,15 @@ type WeatherApiConfig struct {
 	ApiKey string `mapstructure:"api_key"`
 }
 
+type JWTConfig struct {
+	SecretKey string `mapstructure:"secret_key"`
+}
+
 type Config struct {
 	App        AppConfig        `mapstructure:"app"`
 	Database   DatabaseConfig   `mapstructure:"database"`
 	WeatherApp WeatherApiConfig `mapstructure:"weather_api"`
+	JWT		   JWTConfig     	`mapstructure:"jwt"`
 }
 
 var AppData Config

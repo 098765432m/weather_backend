@@ -11,3 +11,6 @@ database:
 
 weather_api:
   api_key: 68466d0f9d394b8fa6044923252204
+
+jwt:
+  secret_key: wiwi15586

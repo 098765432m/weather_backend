@@ -1,11 +1,13 @@
 package model
 
+import "time"
+
 type User struct {
 	ID        int64  `json:"id"`
 	Username  string `json:"username"`
 	Email     string `json:"email"`
 	Password  string `json:"password"`
 	Role      string `json:"role"`
-	CreatedAt string `json:"created_at"`
-	UpdatedAt string `json:"updated_at"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }

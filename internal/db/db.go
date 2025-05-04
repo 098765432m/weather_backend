@@ -49,7 +49,7 @@ func (d *Database) InitDb() {
 		username VARCHAR(255) NOT NULL UNIQUE,
 		email VARCHAR(255) NOT NULL,
 		password VARCHAR(255) NOT NULL,
-		role ENUM('GUEST', 'STAFF', 'MANAGER') NOT NULL DEFAULT 'GUEST'
+		role ENUM('GUEST', 'STAFF', 'MANAGER') NOT NULL DEFAULT 'GUEST',
 		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 		updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 	);`
@@ -58,6 +58,10 @@ func (d *Database) InitDb() {
 	if err != nil {
 		logger.NewLogger().Error.Fatal("Failed to create users table:", err)
 	}
+}
+
+func (d *Database) GetDb() *sql.DB {
+	return d.db
 }
 
 func (d *Database) CloseDb() {
